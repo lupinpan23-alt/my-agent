@@ -16,10 +16,10 @@ def load_config(config_path: str = "config.yaml") -> dict[str, Any]:
 
 
 class Agent:
-    def __init__(self, config_path: str = "config.yaml") -> None:
-        cfg = load_config(config_path)
-        self.system_prompt: str = cfg["system_prompt"]
-        self.model_name: str = cfg["model"]
+    def __init__(self, name: str, model: str, system_prompt: str) -> None:
+        self.name = name
+        self.system_prompt = system_prompt
+        self.model_name = model
         self.llm = ChatOpenRouter(
             model=self.model_name,
             api_key=os.getenv("OPENROUTER_API_KEY"),
