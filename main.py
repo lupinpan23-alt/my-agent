@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import uuid
 from contextlib import asynccontextmanager
+from typing import Any
 
 import yaml
 from dotenv import load_dotenv
@@ -210,4 +211,11 @@ async def agent_clear_session(agent_id: str, session_id: str) -> dict:
 
 @app.get("/health")
 async def health() -> dict:
-    return {"status": "ok"}
+    info: dict[str, Any] = {"status": "ok"}
+    if _agent is not None:
+        info["default_agent"] = {
+            "name": _agent.name,
+            "model": _agent.model_name,
+        }
+    info["cached_agents"] = len(_agent_cache)
+    return info
